@@ -514,42 +514,45 @@ namespace Myra.Graphics2D.UI
 
 			_renderContext.DeviceScissor = oldDeviceScissor;
 		}
-
+       
 		public void Render()
-		{
-			// Layout run
-			UpdateLayout();
+        {
+            // Render run
+            RenderVisual();
+        }
 
-			// First input run: set Desktop/Widgets input states and schedule input events
-			UpdateInput();
+        public void Update()
+        {
+            // Layout run
+            UpdateLayout();
 
-			_inputContext.Reset();
+            // First input run: set Desktop/Widgets input states and schedule input events
+            UpdateInput();
 
-			var childrenCopy = ChildrenCopy;
-			for (var i = childrenCopy.Count - 1; i >= 0; --i)
-			{
-				var widget = childrenCopy[i];
-				widget.ProcessInput(_inputContext);
-			}
+            _inputContext.Reset();
 
-			// Only one widget at a time can receive mouse wheel event
-			// So scheduling it here
-			if (_inputContext.MouseWheelWidget != null)
-			{
-				InputEventsManager.Queue(_inputContext.MouseWheelWidget, InputEventType.MouseWheel);
-			}
+            var childrenCopy = ChildrenCopy;
+            for (var i = childrenCopy.Count - 1; i >= 0; --i)
+            {
+                var widget = childrenCopy[i];
+                widget.ProcessInput(_inputContext);
+            }
 
-			// Second input run: process input events
-			InputEventsManager.ProcessEvents();
+            // Only one widget at a time can receive mouse wheel event
+            // So scheduling it here
+            if (_inputContext.MouseWheelWidget != null)
+            {
+                InputEventsManager.Queue(_inputContext.MouseWheelWidget, InputEventType.MouseWheel);
+            }
 
-			// Do another layout run, since an input event could cause the layout change
-			UpdateLayout();
+            // Second input run: process input events
+            InputEventsManager.ProcessEvents();
 
-			// Render run
-			RenderVisual();
-		}
+            // Do another layout run, since an input event could cause the layout change
+            UpdateLayout();
+        }
 
-		private void InvalidateTransform()
+        private void InvalidateTransform()
 		{
 			_transform = null;
 			_inverseMatrixDirty = true;
