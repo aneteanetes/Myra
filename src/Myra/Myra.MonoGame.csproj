@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Geranium.Reflection" Version="2.1.4" />
     <PackageReference Include="XNAssets.MonoGame" Version="$(XNAssetsVersion)" />
     <PackageReference Include="FontStashSharp.MonoGame" Version="$(FontStashSharpVersion)" />
     <PackageReference Include="info.lundin.math.dll" Version="$(InfoLundinMathVersion)" />

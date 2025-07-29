@@ -21,7 +21,7 @@ using Matrix = System.Numerics.Matrix3x2;
 
 namespace Myra.Graphics2D.UI
 {
-	public partial class Desktop : ITransformable, IDisposable
+    public partial class Desktop : ITransformable, IDisposable
 	{
 		private Rectangle _bounds;
 		private Vector2 _scale = Vector2.One;
@@ -550,6 +550,14 @@ namespace Myra.Graphics2D.UI
 
             // Do another layout run, since an input event could cause the layout change
             UpdateLayout();
+
+            foreach (var widget in ChildrenCopy)
+            {
+                if (widget.Visible)
+                {
+                    widget.UpdateArrange();
+                }
+            }
         }
 
         private void InvalidateTransform()

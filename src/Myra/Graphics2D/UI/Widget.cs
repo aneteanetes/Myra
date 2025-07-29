@@ -6,6 +6,8 @@ using System.Xml.Serialization;
 using Myra.MML;
 using Myra.Graphics2D.UI.Properties;
 using Myra.Attributes;
+using Geranium.Reflection;
+
 
 #if MONOGAME || FNA
 using Microsoft.Xna.Framework;
@@ -555,8 +557,8 @@ namespace Myra.Graphics2D.UI
 					}
 				}
 
-				LocalMousePosition = null;
-				LocalTouchPosition = null;
+				//LocalMousePosition = null;
+				//LocalTouchPosition = null;
 
 				_desktop = value;
 
@@ -815,7 +817,7 @@ namespace Myra.Graphics2D.UI
 			widgets.Add(this);
 		}
 
-		public void BringToBack()
+        public void BringToBack()
 		{
 			var widgets = Parent != null ? Parent.Children : Desktop.Widgets;
 
@@ -841,8 +843,6 @@ namespace Myra.Graphics2D.UI
 				Desktop.ShowTooltip(this, pos);
 				_lastMouseMovement = null;
 			}
-
-			UpdateArrange();
 
 			var oldTransform = context.Transform;
 
@@ -1409,7 +1409,19 @@ namespace Myra.Graphics2D.UI
 			return result;
 		}
 
-		public virtual bool InputFallsThrough(Point localPos) => false;
+        public override string ToString()
+        {
+			if (Tag != null)
+			{
+				var str = Tag.ToString();
+				if (str.IsNotEmpty())
+					return str;
+			}
+
+            return base.ToString();
+        }
+
+        public virtual bool InputFallsThrough(Point localPos) => false;
 
 		public Widget Clone()
 		{
