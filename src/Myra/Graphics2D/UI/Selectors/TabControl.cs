@@ -2,6 +2,8 @@
 using Myra.Graphics2D.UI.Styles;
 using System;
 using System.Xml.Serialization;
+using Myra.Graphics2D.Brushes;
+using Microsoft.Xna.Framework;
 
 namespace Myra.Graphics2D.UI
 {
@@ -19,7 +21,21 @@ namespace Myra.Graphics2D.UI
 		private Panel _panelContent;
 		private TabSelectorPosition _selectorPosition;
 
-		[Browsable(false)]
+        [Browsable(false)]
+        [XmlIgnore]
+        public HorizontalAlignment TabButtonsHorizontalAligment
+        {
+            get
+            {
+                return _gridButtons.HorizontalAlignment;
+            }
+            set
+            {
+				_gridButtons.HorizontalAlignment = value;
+            }
+        }
+
+        [Browsable(false)]
 		[XmlIgnore]
 		public TabControlStyle TabControlStyle { get; set; }
 
@@ -86,7 +102,7 @@ namespace Myra.Graphics2D.UI
 			VerticalAlignment = VerticalAlignment.Top;
 
 			_gridButtons = new Grid();
-			_panelContent = new Panel();
+            _panelContent = new Panel();
 
 			_selectorPosition = TabSelectorPosition.Top;
 			_gridButtons.DefaultColumnProportion = Proportion.Auto;
