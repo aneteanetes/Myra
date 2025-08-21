@@ -20,7 +20,7 @@ namespace Myra.Graphics2D.UI
 
 		[Browsable(false)]
 		[Content]
-		protected internal ObservableCollection<Widget> Children { get; } = new ObservableCollection<Widget>();
+		public ObservableCollection<Widget> Children { get; } = new ObservableCollection<Widget>();
 
 		protected internal IEnumerable<Widget> ChildrenCopy
 		{
