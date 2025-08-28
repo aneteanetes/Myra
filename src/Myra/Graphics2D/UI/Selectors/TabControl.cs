@@ -4,6 +4,7 @@ using System;
 using System.Xml.Serialization;
 using Myra.Graphics2D.Brushes;
 using Microsoft.Xna.Framework;
+using Myra.Events;
 
 namespace Myra.Graphics2D.UI
 {
@@ -121,7 +122,7 @@ namespace Myra.Graphics2D.UI
 			SetStyle(styleName);
 		}
 
-		private void ItemOnChanged(object sender, EventArgs eventArgs)
+		private void ItemOnChanged(object sender, MyraEventArgs eventArgs)
 		{
 			var item = (TabItem)sender;
 
@@ -361,7 +362,7 @@ namespace Myra.Graphics2D.UI
 			}
 		}
 
-		private void ButtonOnClick(object sender, EventArgs eventArgs)
+		private void ButtonOnClick(object sender, MyraEventArgs eventArgs)
 		{
 			var button = (ListViewButton)sender;
 			var index = GetButtonIndex(button);
