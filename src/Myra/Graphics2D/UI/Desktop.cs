@@ -111,7 +111,7 @@ namespace Myra.Graphics2D.UI
 			}
 		}
 
-		internal Rectangle LayoutBounds => new Rectangle(0, 0, InternalBounds.Width, InternalBounds.Height);
+		public Rectangle LayoutBounds => new Rectangle(0, 0, InternalBounds.Width, InternalBounds.Height);
 
 		public Widget ContextMenu { get; private set; }
 		public Widget Tooltip { get; private set; }
