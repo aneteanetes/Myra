@@ -1456,6 +1456,15 @@ namespace Myra.Graphics2D.UI
 			return result;
 		}
 
+		public T CloneAs<T>()
+		{
+			var clone = Clone();
+			if (clone is T tClone)
+				return tClone;
+
+			return default;
+		}
+
 		protected internal virtual void CopyFrom(Widget w)
 		{
 			StyleName = w.StyleName;
