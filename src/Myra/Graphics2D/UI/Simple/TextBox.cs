@@ -1191,10 +1191,13 @@ namespace Myra.Graphics2D.UI
 			base.OnTouchDoubleClick();
 
 			var position = CursorPosition;
-			if (string.IsNullOrEmpty(Text) || position < 0 || position >= Text.Length || Desktop.IsShiftDown)
+			if (string.IsNullOrEmpty(Text) || position < 0 || position > Text.Length || Desktop.IsShiftDown)
 			{
 				return;
 			}
+
+			if (position == Text.Length)
+				position--;
 
 			if (char.IsWhiteSpace(Text[position]))
 			{
