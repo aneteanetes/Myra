@@ -16,6 +16,8 @@ namespace Myra.Graphics2D.TextureAtlases
 {
 	public class TextureRegion: IImage
 	{
+		public SpriteEffects SpriteEffects { get; set; }
+
 		private readonly Rectangle _bounds;
 
 #if MONOGAME || FNA || STRIDE
@@ -81,7 +83,7 @@ namespace Myra.Graphics2D.TextureAtlases
 
 		public virtual void Draw(RenderContext context, Rectangle dest, Color color)
 		{
-			context.Draw(Texture, dest, Bounds, color);
+			context.Draw(Texture, dest, Bounds, color, SpriteEffects);
 		}
 	}
 }

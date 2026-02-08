@@ -202,7 +202,7 @@ namespace Myra.Graphics2D
 		/// <param name="color"></param>
 		/// <param name="rotation"></param>
 		/// <param name="depth"></param>
-		public void Draw(Texture2D texture, Rectangle destinationRectangle, Rectangle? sourceRectangle, Color color, float rotation, float depth = 0.0f)
+		public void Draw(Texture2D texture, Rectangle destinationRectangle, Rectangle? sourceRectangle, Color color, float rotation, float depth = 0.0f, SpriteEffects spriteEffects = SpriteEffects.None)
 		{
 			Vector2 sz;
 			if (sourceRectangle != null)
@@ -229,7 +229,7 @@ namespace Myra.Graphics2D
 
 			var pos = new Vector2(destinationRectangle.X, destinationRectangle.Y);
 			var scale = new Vector2(destinationRectangle.Width / sz.X, destinationRectangle.Height / sz.Y);
-			Draw(texture, pos, sourceRectangle, color, rotation, scale, depth);
+			Draw(texture, pos, sourceRectangle, color, rotation, scale, depth, spriteEffects);
 		}
 
 		/// <summary>
@@ -249,15 +249,25 @@ namespace Myra.Graphics2D
 		/// <param name="destinationRectangle"></param>
 		/// <param name="sourceRectangle"></param>
 		/// <param name="color"></param>
-		public void Draw(Texture2D texture, Rectangle destinationRectangle, Rectangle? sourceRectangle, Color color) => Draw(texture, destinationRectangle, sourceRectangle, color, 0);
+		public void Draw(Texture2D texture, Rectangle destinationRectangle, Rectangle? sourceRectangle, Color color) => Draw(texture, destinationRectangle, sourceRectangle, color, 0, 0);
 
-		/// <summary>
-		/// Draws a texture
-		/// </summary>
-		/// <param name="texture"></param>
-		/// <param name="destinationRectangle"></param>
-		/// <param name="color"></param>
-		public void Draw(Texture2D texture, Rectangle destinationRectangle, Color color) => Draw(texture, destinationRectangle, null, color, 0);
+        /// <summary>
+        /// Draws a texture with Effect
+        /// </summary>
+        /// <param name="texture"></param>
+        /// <param name="destinationRectangle"></param>
+        /// <param name="sourceRectangle"></param>
+        /// <param name="color"></param>
+		/// <param name="spriteEffect"></param>
+        public void Draw(Texture2D texture, Rectangle destinationRectangle, Rectangle? sourceRectangle, Color color, SpriteEffects spriteEffect) => Draw(texture, destinationRectangle, sourceRectangle, color, 0,0, spriteEffect);
+
+        /// <summary>
+        /// Draws a texture
+        /// </summary>
+        /// <param name="texture"></param>
+        /// <param name="destinationRectangle"></param>
+        /// <param name="color"></param>
+        public void Draw(Texture2D texture, Rectangle destinationRectangle, Color color) => Draw(texture, destinationRectangle, null, color, 0,0);
 
 		/// <summary>
 		/// Draws a texture
@@ -268,7 +278,7 @@ namespace Myra.Graphics2D
 		/// <param name="color"></param>
 		/// <param name="rotation"></param>
 		/// <param name="depth"></param>
-		public void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 scale, float depth = 0.0f)
+		public void Draw(Texture2D texture, Vector2 position, Rectangle? sourceRectangle, Color color, float rotation, Vector2 scale, float depth = 0.0f, SpriteEffects spriteEffects = SpriteEffects.None)
 		{
 			SetTextureFiltering(_isAnisotropicFilteringOn ? TextureFiltering.Anisotropic : TextureFiltering.Nearest);
 			color = CrossEngineStuff.MultiplyColor(color, Opacity);
@@ -278,7 +288,7 @@ namespace Myra.Graphics2D
 #if MONOGAME || FNA
 			position = Transform.Apply(position);
 
-			_renderer.Draw(texture, position, sourceRectangle, color, rotation, Vector2.Zero, scale, SpriteEffects.None, depth);
+			_renderer.Draw(texture, position, sourceRectangle, color, rotation, Vector2.Zero, scale, spriteEffects, depth);
 #elif STRIDE
 			position = Transform.Apply(position);
 
