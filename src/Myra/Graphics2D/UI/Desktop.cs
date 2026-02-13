@@ -31,7 +31,7 @@ namespace Myra.Graphics2D.UI
 		private Matrix _inverseMatrix;
 		private bool _inverseMatrixDirty = true;
 
-		private readonly InputContext _inputContext = new InputContext();
+        private readonly InputContext _inputContext = new InputContext();
 		private readonly RenderContext _renderContext = new RenderContext();
 
 		private bool _layoutDirty = true;
@@ -78,7 +78,7 @@ namespace Myra.Graphics2D.UI
 			}
 		}
 
-		public HorizontalMenu MenuBar { get; private set; }
+        public HorizontalMenu MenuBar { get; private set; }
 
 		internal List<Widget> ChildrenCopy
 		{
@@ -93,7 +93,32 @@ namespace Myra.Graphics2D.UI
 
 		public Func<Rectangle> BoundsFetcher = DefaultBoundsFetcher;
 
-		internal Rectangle InternalBounds
+		private Func<MyraViewportAdapter> _viewportAdapterFetcher;
+        public Func<MyraViewportAdapter> ViewportAdapterFetcher
+		{
+			get => _viewportAdapterFetcher;
+
+            set
+			{
+				_viewportAdapterFetcher = value;
+				BoundsFetcher = () =>
+				{
+					if (ViewportAdapter.HasValue)
+					{
+						var viewAdapter = ViewportAdapter.Value;
+						return new Rectangle(viewAdapter.X, viewAdapter.Y, viewAdapter.VirtualWidth, viewAdapter.VirtualHeight);
+					}
+					else
+					{
+						return DefaultBoundsFetcher();
+					}
+				};
+            }
+        }
+
+        public MyraViewportAdapter? ViewportAdapter { get; private set; }
+
+        internal Rectangle InternalBounds
 		{
 			get => _bounds;
 
@@ -487,9 +512,14 @@ namespace Myra.Graphics2D.UI
 			// Disable transform during setting the scissor rectangle for the Desktop
 			_renderContext.Transform = Transform;
 
-			var bounds = _renderContext.Transform.Apply(LayoutBounds);
+			if (ViewportAdapter.HasValue)
+			{
+				_renderContext.Transform = new Transform(ViewportAdapter.Value.TransformMatrix, Vector2.One, 0f);
+			}
+
+            var bounds = _renderContext.Transform.Apply(LayoutBounds);
 			_renderContext.Scissor = bounds;
-			_renderContext.Opacity = Opacity;
+            _renderContext.Opacity = Opacity;
 
 			if (Background != null)
 			{
@@ -517,8 +547,13 @@ namespace Myra.Graphics2D.UI
        
 		public void Render()
         {
-            // Render run
-            RenderVisual();
+			ViewportAdapter = ViewportAdapterFetcher?.Invoke();
+
+			if (ViewportAdapter.HasValue)
+				_renderContext.TransformMatrix = ViewportAdapter.Value.TransformMatrix;
+
+			// Render run
+			RenderVisual();
         }
 
         public void Update()
@@ -884,7 +919,7 @@ namespace Myra.Graphics2D.UI
 			return new Rectangle(0, 0, size.X, size.Y);
 		}
 
-		private void ReleaseUnmanagedResources()
+        private void ReleaseUnmanagedResources()
 		{
 			_renderContext.Dispose();
 		}

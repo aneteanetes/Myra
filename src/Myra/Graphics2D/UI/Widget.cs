@@ -858,7 +858,15 @@ namespace Myra.Graphics2D.UI
 			if (ClipToBounds && context.Transform.Rotation == 0)
 			{
 				oldScissorRectangle = context.Scissor;
-				var absoluteBounds = context.Transform.Apply(Bounds);
+                var absoluteBounds = context.Transform.Apply(Bounds);
+
+                if (Desktop.ViewportAdapter.HasValue)
+                {
+					// position stored in context.Transform, so we need apply Transform twice
+                    var scaledTransform = new Transform(context.TransformMatrix.Value, Vector2.One, 0);
+                    absoluteBounds = scaledTransform.Apply(absoluteBounds);
+                }
+
 				var newScissorRectangle = Rectangle.Intersect(context.Scissor, absoluteBounds);
 
 				if (newScissorRectangle.Width == 0 || newScissorRectangle.Height == 0)

@@ -2,8 +2,6 @@ using System;
 using FontStashSharp;
 using Myra.Utility;
 using FontStashSharp.RichText;
-using FontStashSharp.Interfaces;
-using info.lundin.math;
 
 #if MONOGAME || FNA
 using Microsoft.Xna.Framework;
@@ -90,6 +88,7 @@ namespace Myra.Graphics2D
 		private Rectangle _scissor;
 		private TextureFiltering _textureFiltering = TextureFiltering.Nearest;
 		public Transform Transform;
+		public Matrix? TransformMatrix { get; set; }
 
 		internal Rectangle DeviceScissor
 		{
@@ -109,7 +108,7 @@ namespace Myra.Graphics2D
 			{
 #if MONOGAME || FNA
 				var device = _renderer.GraphicsDevice;
-				device.ScissorRectangle = value;
+                device.ScissorRectangle = value;
 #elif STRIDE
 				Flush();
 				MyraEnvironment.Game.GraphicsContext.CommandList.SetScissorRectangle(value);
@@ -462,7 +461,8 @@ namespace Myra.Graphics2D
 				samplerState,
 				null,
 				UIRasterizerState,
-				null);
+				null,
+                TransformMatrix);
 #elif STRIDE
 			var samplerState = SelectedSamplerState();
 
