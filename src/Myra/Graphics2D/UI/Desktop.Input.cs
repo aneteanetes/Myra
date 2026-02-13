@@ -149,7 +149,13 @@ namespace Myra.Graphics2D.UI
             if (ViewportAdapter.HasValue)
             {
                 var inv = Matrix.Invert(ViewportAdapter.Value.TransformMatrix);
+#if STRIDE
+				var transformed = Vector2.Transform(mouseInfo.Position.ToVector2(), inv);
+                mousePos = new Vector2(transformed.X, transformed.Y);
+#else
+
                 mousePos = Vector2.Transform(mouseInfo.Position.ToVector2(), inv);
+#endif
             }
             else
             {
