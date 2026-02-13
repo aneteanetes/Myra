@@ -148,7 +148,11 @@ namespace Myra.Graphics2D.UI
             Vector2 mousePos = Vector2.Zero;
             if (ViewportAdapter.HasValue)
             {
-                var inv = Matrix.Invert(ViewportAdapter.Value.TransformMatrix);
+#if PLATFORM_AGNOSTIC
+                Matrix.Invert(ViewportAdapter.Value.TransformMatrix, out var inv);
+#else
+				var inv = Matrix.Invert(ViewportAdapter.Value.TransformMatrix);
+#endif
 #if STRIDE
 				var transformed = Vector2.Transform(mouseInfo.Position.ToVector2(), inv);
                 mousePos = new Vector2(transformed.X, transformed.Y);
@@ -212,7 +216,11 @@ namespace Myra.Graphics2D.UI
 
                 if (ViewportAdapter.HasValue)
                 {
-                    var inv = Matrix.Invert(ViewportAdapter.Value.TransformMatrix);
+#if PLATFORM_AGNOSTIC
+                    Matrix.Invert(ViewportAdapter.Value.TransformMatrix, out var inv);
+#else
+					var inv = Matrix.Invert(ViewportAdapter.Value.TransformMatrix);
+#endif
                     pos = Vector2.Transform(new Vector2(pos.X, pos.Y), inv);
                 }
 

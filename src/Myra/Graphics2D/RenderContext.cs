@@ -20,6 +20,10 @@ using Texture2D = System.Object;
 using Color = FontStashSharp.FSColor;
 #endif
 
+#if PLATFORM_AGNOSTIC
+using Matrix = System.Numerics.Matrix3x2;
+#endif
+
 namespace Myra.Graphics2D
 {
 	public enum TextureFiltering
