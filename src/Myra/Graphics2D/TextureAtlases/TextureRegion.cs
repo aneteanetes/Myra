@@ -39,6 +39,8 @@ namespace Myra.Graphics2D.TextureAtlases
 			get { return _bounds; }
 		}
 
+		public Color? Color { get; set; }
+
 		public Point Size
 		{
 			get
@@ -58,7 +60,7 @@ namespace Myra.Graphics2D.TextureAtlases
 
 #endif
 
-		public TextureRegion(Texture2D texture, Rectangle bounds)
+        public TextureRegion(Texture2D texture, Rectangle bounds)
 		{
 			if (texture == null)
 			{
@@ -83,6 +85,8 @@ namespace Myra.Graphics2D.TextureAtlases
 
 		public virtual void Draw(RenderContext context, Rectangle dest, Color color)
 		{
+			if (this.Color.HasValue)
+				color = this.Color.Value;
 			context.Draw(Texture, dest, Bounds, color, SpriteEffects);
 		}
 	}
